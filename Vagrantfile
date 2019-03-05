@@ -11,15 +11,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     lb.vm.provider :virtualbox do |vb|
       vb.customize ["modifyvm", :id, "--memory", "1024","--cpus", "1", "--name", "load_balancer" ]
     end
-    lb.vm.provision "shell", inline: <<-SHELL
-      yum install -y wget
-      yum install -y haproxy
-      yum install -y unzip
-      wget https://releases.hashicorp.com/consul-template/0.19.4/consul-template_0.19.4_linux_amd64.zip -P /tmp
-      unzip /tmp/consul-template_0.19.4_linux_amd64.zip -d /tmp
-      mv /tmp/consul-template /usr/bin
-      mkdir /etc/consul-template
-    SHELL
+    lb.vm.provision :ansible do |ansible|
+          ansible.verbose = true
+	  ansible.playbook = "playbooks/playbook_lb.yml"
+    end
   end
   config.vm.define :discovery_service do |ds|
     ds.vm.box = "centos_7"
@@ -27,15 +22,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     ds.vm.provider :virtualbox do |vb|
       vb.customize ["modifyvm", :id, "--memory", "1024","--cpus", "1", "--name", "consul_server" ]
     end
-    ds.vm.provision "shell", inline: <<-SHELL
-      yum install -y wget
-      yum install -y unzip
-      wget https://releases.hashicorp.com/consul/1.0.0/consul_1.0.0_linux_amd64.zip -P /tmp
-      unzip /tmp/consul_1.0.0_linux_amd64.zip -d /tmp
-      mv /tmp/consul /usr/bin
-      mkdir /etc/consul.d
-      mkdir -p /etc/consul/data
-    SHELL
+    ds.vm.provision :ansible do |ansible|
+	    ansible.verbose = true
+	    ansible.playbook = "playbooks/playbook_cs.yml"
+    end
   end
   config.vm.define :microservice_a do |ma|
     ma.vm.box = "centos_7"
@@ -43,17 +33,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     ma.vm.provider :virtualbox do |vb|
       vb.customize ["modifyvm", :id, "--memory", "1024","--cpus", "1", "--name", "microservice_a" ]
     end
-    ma.vm.provision "shell", inline: <<-SHELL
-      yum install -y wget
-      yum install -y unzip
-      wget https://bootstrap.pypa.io/get-pip.py -P /tmp
-      python /tmp/get-pip.py
-      wget https://releases.hashicorp.com/consul/1.0.0/consul_1.0.0_linux_amd64.zip -P /tmp
-      unzip /tmp/consul_1.0.0_linux_amd64.zip -d /tmp
-      mv /tmp/consul /usr/bin
-      mkdir /etc/consul.d
-      mkdir -p /etc/consul/data
-    SHELL
+    ma.vm.provision :ansible do |ansible|
+	    ansible.verbose = true
+	    ansible.playbook = "playbooks/playbook_ma.yml"
+    end
   end
   config.vm.define :microservice_b do |mb|
     mb.vm.box = "centos_7"
@@ -61,16 +44,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     mb.vm.provider :virtualbox do |vb|
       vb.customize ["modifyvm", :id, "--memory", "1024","--cpus", "1", "--name", "microservice_b" ]
     end
-    mb.vm.provision "shell", inline: <<-SHELL
-      yum install -y wget
-      yum install -y unzip
-      wget https://bootstrap.pypa.io/get-pip.py -P /tmp
-      python /tmp/get-pip.py
-      wget https://releases.hashicorp.com/consul/1.0.0/consul_1.0.0_linux_amd64.zip -P /tmp
-      unzip /tmp/consul_1.0.0_linux_amd64.zip -d /tmp
-      mv /tmp/consul /usr/bin
-      mkdir /etc/consul.d
-      mkdir -p /etc/consul/data
-    SHELL
+    mb.vm.provision :ansible do |ansible|
+	    ansible.verbose = true
+	    ansible.playbook = "playbooks/playbook_mb.yml"
+    end
   end
 end

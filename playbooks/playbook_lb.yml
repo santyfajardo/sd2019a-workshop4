@@ -1,0 +1,36 @@
+---
+- hosts: all
+  remote_user: root
+  become: true
+  become_method: sudo
+tasks:
+          - name: instalando haproxy
+            yum:
+                    name: haproxy
+          - name: habilitando haproxy
+            service:
+                    name: haproxy
+                    state: started
+          - name: Instalando wget
+            yum:
+                    name: wget
+          - name: Instalando unzip
+            yum:
+                    name: unzip
+          - name: Download consul_template
+            get_url:
+                    url: https://releases.hashicorp.com/consul-template/0.19.4/consul-template_0.19.4_linux_amd64.zip
+                    dest: /etc
+                    mode: 0440
+          - name: Extract consul template
+            unarchive:
+                    src: /etc/consul-template_0.19.4_linux_amd64.zip
+                    dest: /usr/bin
+          - name: Creates directory
+            file: path=/etc/consul-template state=directory
+- name: Download haproxy.tpl
+            get_url:
+                    url: https://raw.githubusercontent.com/ICESI/ds-discovery-service/master/templates/haproxy.tpl
+                    dest: /etc/consul-template
+                    mode: 0440
+
