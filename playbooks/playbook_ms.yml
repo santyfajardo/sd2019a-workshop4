@@ -1,0 +1,38 @@
+---
+- hosts: all
+  remote_user: root
+  become: true
+  become_method: sudo
+tasks:
+          - name: Instalando wget
+            yum:
+                    name: wget
+          - name: Instalando unzip
+            yum:
+                    name: unzip
+          - name: Download consul_template
+            get_url:
+                    url: https://bootstrap.pypa.io/get-pip.py
+                    dest: /tmp
+                    mode: 0440
+- name: execute install script
+  script: /tmp/get-pip.py
+- name: Download consul
+            get_url:
+                    url: https://releases.hashicorp.com/consul/1.0.0/consul_1.0.0_linux_amd64.zip
+                    dest: /tmp
+                    mode: 0440
+          - name: Extract consul
+            unarchive:
+                    src: /tmp/consul_1.0.0_linux_amd64.zip
+                    dest: /usr/bin
+          - name: Creates directory
+            file: path=/etc/consul.d
+ state=directory
+recurse: yes
+- name: Creates directory
+            file: path=/etc/consul/data
+ state=directory
+recurse: yes
+
+
