@@ -19,7 +19,7 @@ tasks:
                     src: /tmp/consul_1.0.0_linux_amd64.zip
                     dest: /usr/bin
           - name: Creates directory
-            file: path=/etc/consul.d state=directory
+            file: path=/etc/consul.d state=directory recurse: yes
 -name: Creates directory data
-file: path=/etc/consul/data
+file: path=/etc/consul/data state=directory recurse: yes
 

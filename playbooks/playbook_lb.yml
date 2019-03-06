@@ -27,7 +27,7 @@ tasks:
                     src: /etc/consul-template_0.19.4_linux_amd64.zip
                     dest: /usr/bin
           - name: Creates directory
-            file: path=/etc/consul-template state=directory
+            file: path=/etc/consul-template state=directory recurse: yes
 - name: Download haproxy.tpl
             get_url:
                     url: https://raw.githubusercontent.com/ICESI/ds-discovery-service/master/templates/haproxy.tpl
