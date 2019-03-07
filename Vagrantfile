@@ -24,7 +24,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
     ds.vm.provision :ansible do |ansible|
 	    ansible.verbose = true
-	    ansible.playbook = "playbooks/playbook_cs.yml"
+	    ansible.playbook = "playbooks/playbook_ds.yml"
     end
   end
   config.vm.define :microservice_a do |ma|
@@ -35,7 +35,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
     ma.vm.provision :ansible do |ansible|
 	    ansible.verbose = true
-	    ansible.playbook = "playbooks/playbook_ma.yml"
+	    ansible.playbook = "playbooks/playbook_ms.yml"
     end
   end
   config.vm.define :microservice_b do |mb|
@@ -46,7 +46,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
     mb.vm.provision :ansible do |ansible|
 	    ansible.verbose = true
-	    ansible.playbook = "playbooks/playbook_mb.yml"
+	    ansible.playbook = "playbooks/playbook_ms.yml"
     end
   end
 end
